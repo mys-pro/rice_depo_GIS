@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    working_dir: /var/www
+    volumes:
+      - ./src:/var/www
+    networks:
+      - network-app
+
+  webserver:
+    platform: linux/amd64
+    image: nginx:alpine
+    ports:
+      - "9001:80"
+    depends_on:
+      - app
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - network-app
+
+  db:
+    platform: linux/amd64
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: user
+      MYSQL_DATABASE: rice_depo_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - db-store:/var/lib/mysql
+    networks:
+      - network-app
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: user
+    depends_on:
+      - db
+    networks:
+      - network-app
+
+volumes:
+  db-store:
+    driver: local
+networks:
+  network-app:
+    driver: bridge
