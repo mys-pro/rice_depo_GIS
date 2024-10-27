@@ -21,6 +21,8 @@ class UserController extends Controller
 	protected $userRepository;
 	protected $userService;
 	protected $warehouseRepository;
+	protected $page;
+	protected $subtitle;
 
 	public function __construct(
 		UserCatalogueRepository $userCatalogueRepository,
@@ -32,11 +34,19 @@ class UserController extends Controller
 		$this->userService = $userService;
 		$this->userRepository = $userRepository;
 		$this->warehouseRepository = $warehouseRepository;
+		$this->page = 'user';
+		$this->subtitle = [
+			[
+				'url' => route('user.index'),
+				'title' => 'Quản lý nhân viên',
+			]
+		];
 	}
 
 	public function index(Request $request)
 	{
 		$get = $request->input();
+		$page = $this->page;
 		$title = 'Quản lý nhân viên';
 
 		$search = $get['search'] ?? '';
@@ -67,6 +77,7 @@ class UserController extends Controller
 		$template = 'backend.user.index';
 		$users = $this->userRepository->getPaginateBy($conditions);
 		return view('backend.dashboard.layout', compact(
+			'page',
 			'title',
 			'users',
 			'warehouses',
@@ -77,20 +88,17 @@ class UserController extends Controller
 
 	public function create()
 	{
-		$subtitle = [
-			[
-				'url' => route('user.index'),
-				'title' => 'Quản lý nhân viên',
-			]
-		];
+		$page = $this->page;
 		$title = "Thêm nhân viên";
+		$subtitle = $this->subtitle;
 		$form = route('user.store');
 		$template = 'backend.user.create';
 		$warehouses = $this->warehouseRepository->all();
 		$userCatalogues = $this->userCatalogueRepository->all();
 		return view('backend.dashboard.layout', compact(
-			'subtitle',
+			'page',
 			'title',
+			'subtitle',
 			'form',
 			'template',
 			'warehouses',
@@ -110,14 +118,11 @@ class UserController extends Controller
 
 	public function detail($id)
 	{
+		$page = $this->page;
 		$self = Auth::id() == $id;
-		$subtitle = [
-			[
-				'url' => route('user.index'),
-				'title' => $self ? 'Người dùng' : 'Quản lý nhân viên',
-			]
-		];
 		$title = "Tổng quan";
+		$subtitle = $this->subtitle;
+		$subtitle[0]['title'] = $self ? 'Người dùng' : 'Quản lý nhân viên';
 		$template = 'backend.user.detail';
 		$user = $this->userRepository->find($id);
 		$user_catalogue = $this->userCatalogueRepository->find($user->user_catalogue_id);
@@ -127,6 +132,7 @@ class UserController extends Controller
 		}
 		return view('backend.dashboard.layout', compact(
 			'self',
+			'page',
 			'title',
 			'subtitle',
 			'template',
@@ -139,18 +145,16 @@ class UserController extends Controller
 	public function changePass($id)
 	{
 		$self = Auth::id() == $id;
-		$subtitle = [
-			[
-				'url' => route('user.index'),
-				'title' => $self ? 'Người dùng' : 'Quản lý nhân viên',
-			]
-		];
+		$page = $this->page;
+		$subtitle = $this->subtitle;
+		$subtitle[0]['title'] = $self ? 'Người dùng' : 'Quản lý nhân viên';
 		$title = "Đổi mật khẩu";
 		$template = 'backend.user.changePass';
 		$user = $this->userRepository->find($id);
 		$user_catalogue = $this->userCatalogueRepository->find($user->user_catalogue_id);
 		return view('backend.dashboard.layout', compact(
 			'self',
+			'page',
 			'title',
 			'subtitle',
 			'template',
@@ -172,13 +176,10 @@ class UserController extends Controller
 	public function edit($id)
 	{
 		$self = Auth::id() == $id;
-		$subtitle = [
-			[
-				'url' => route('user.index'),
-				'title' => $self ? 'Người dùng' : 'Quản lý nhân viên',
-			]
-		];
+		$page = $this->page;
 		$title = "Chỉnh sửa";
+		$subtitle = $this->subtitle;
+		$subtitle[0]['title'] = $self ? 'Người dùng' : 'Quản lý nhân viên';
 		$template = 'backend.user.edit';
 		$user = $this->userRepository->find($id);
 		if (isset($user->birthday)) {
@@ -188,9 +189,10 @@ class UserController extends Controller
 		$userCatalogues = $this->userCatalogueRepository->all();
 		$user_catalogue = $this->userCatalogueRepository->find($user->user_catalogue_id);
 		return view('backend.dashboard.layout', compact(
+			'page',
 			'self',
-			'subtitle',
 			'title',
+			'subtitle',
 			'template',
 			'user',
 			'warehouses',

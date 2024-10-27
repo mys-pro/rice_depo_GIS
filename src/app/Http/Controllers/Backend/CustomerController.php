@@ -13,15 +13,25 @@ class CustomerController extends Controller
 {
     protected $customerRepository;
     protected $customerService;
+    protected $page;
+    protected $subtitle;
 
     public function __construct(CustomerRepository $customerRepository, customerService $customerService)
     {
         $this->customerRepository = $customerRepository;
         $this->customerService = $customerService;
+        $this->page = 'customer';
+        $this->subtitle = [
+            [
+                'url' => route('customer.index'),
+                'title' => 'Quản lý khách hàng',
+            ]
+        ];
     }
 
     public function index(Request $request)
     {
+        $page = $this->page;
         $title = "Quản lý khách hàng";
         $get = $request->input();
         $template = 'backend.customer.index';
@@ -36,6 +46,7 @@ class CustomerController extends Controller
         $customers = $this->customerRepository->getPaginateBy($conditions);
 
         return view('backend.dashboard.layout', compact(
+            'page',
             'title',
             'template',
             'customers',
@@ -44,19 +55,16 @@ class CustomerController extends Controller
 
     public function create()
     {
-        $subtitle = [
-            [
-                'url' => route('customer.index'),
-                'title' => 'Quản lý khách hàng',
-            ]
-        ];
+        $page = $this->page;
         $title = 'Thêm khách hàng';
+        $subtitle = $this->subtitle;
         $action = 'Thêm khách hàng';
         $form = route('customer.store');
         $template = 'backend.customer.form';
         return view('backend.dashboard.layout', compact(
-            'subtitle',
+            'page',
             'title',
+            'subtitle',
             'action',
             'form',
             'template',
@@ -76,20 +84,17 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
-        $subtitle = [
-            [
-                'url' => route('customer.index'),
-                'title' => 'Quản lý khách hàng',
-            ]
-        ];
+        $page = $this->page;
         $title = 'Cập nhật khách hàng';
+        $subtitle = $this->subtitle;
         $action = 'Cập nhật';
         $form = route('customer.update', $id);
         $template = 'backend.customer.form';
         $customer = $this->customerRepository->find($id);
         return view('backend.dashboard.layout', compact(
-            'subtitle',
+            'page',
             'title',
+            'subtitle',
             'action',
             'form',
             'template',

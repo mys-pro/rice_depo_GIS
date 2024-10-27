@@ -13,20 +13,31 @@ class RiceController extends Controller
 {
     protected $riceService;
     protected $riceRepository;
+    protected $subtitle;
+    private $page;
 
     public function __construct(RiceService $riceService, RiceRepository $riceRepository)
     {
         $this->riceService = $riceService;
         $this->riceRepository = $riceRepository;
+        $this->subtitle = [
+            [
+                'url' => route('rice.index'),
+                'title' => 'Quản lý lúa',
+            ]
+        ];
+        $this->page = 'rice';
     }
 
     public function index(Request $request)
     {
+        $page = $this->page;
         $get = $request->input();
         $title = 'Quản lý lúa';
         $template = 'backend.rice.index';
         $rice = $this->riceRepository->findByName($get['search'] ?? '');
         return view('backend.dashboard.layout', compact(
+            'page',
             'title',
             'template',
             'rice',
@@ -46,17 +57,14 @@ class RiceController extends Controller
 
     public function create()
     {
-        $subtitle = [
-            [
-                'url' => route('rice.index'),
-                'title' => 'Quản lý lúa',
-            ]
-        ];
+        $page = $this->page;
         $title = 'Thêm lúa';
+        $subtitle = $this->subtitle;
         $action = 'Thêm lúa';
         $form = route('rice.store');
         $template = 'backend.rice.form';
         return view('backend.dashboard.layout', compact(
+            'page',
             'subtitle',
             'title',
             'action',
@@ -78,20 +86,17 @@ class RiceController extends Controller
 
     public function edit($id)
     {
-        $subtitle = [
-            [
-                'url' => route('rice.index'),
-                'title' => 'Quản lý lúa',
-            ]
-        ];
+        $page = $this->page;
         $title = 'Cập nhật lúa';
+        $subtitle = $this->subtitle;
         $action = 'Cập nhật';
         $form = route('rice.update', $id);
         $template = 'backend.rice.form';
         $rice = $this->riceRepository->find($id);
         return view('backend.dashboard.layout', compact(
-            'subtitle',
+            'page',
             'title',
+            'subtitle',
             'action',
             'form',
             'rice',

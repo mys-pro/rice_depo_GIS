@@ -28,10 +28,8 @@ Route::group(['prefix' => 'ajax', 'middleware' => 'auth'], function () {
 // BEGIN: Warehouse
 Route::group(['prefix' => 'warehouse', 'middleware' => 'auth'], function () {
     Route::get('index', [WarehouseController::class, 'index'])->name('warehouse.index');
-    // Route::get('load', [WarehouseController::class, 'load'])->name('warehouse.load');
     Route::get('create', [WarehouseController::class, 'create'])->name('warehouse.create');
     Route::post('store', [WarehouseController::class, 'store'])->name('warehouse.store');
-    // Route::post('info/{id}', [WarehouseController::class, 'info'])->name('warehouse.info');
     Route::get('edit/{id}', [WarehouseController::class, 'edit'])->name('warehouse.edit');
     Route::post('update/{id}', [WarehouseController::class, 'update'])->name('warehouse.update');
     Route::get('delete/{id}', [WarehouseController::class, 'delete'])->name('warehouse.delete');
@@ -72,7 +70,7 @@ Route::group(['prefix' => 'customer', 'middleware' => 'auth'], function () {
 
 // BEGIN: Import
 Route::group(['prefix' => 'import', 'middleware' => 'auth'], function () {
-    Route::get('index/{warehouseId}', [ImportController::class, 'index'])->name('import.index');
-    Route::post('create/{warehouseId}', [ImportController::class, 'create'])->name('import.create');
+    Route::get('index', [ImportController::class, 'index'])->name('import.index');
+    Route::get('create', [ImportController::class, 'create'])->name('import.create');
     Route::post('store/{warehouseId}', [ImportController::class, 'store'])->name('import.store');
 }); // END: Import

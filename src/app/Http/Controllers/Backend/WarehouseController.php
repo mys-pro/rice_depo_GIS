@@ -13,20 +13,31 @@ class WarehouseController extends Controller
 {
     protected $warehouseService;
     protected $warehouseRepository;
+    protected $subtitle;
+    protected $page;
 
     public function __construct(WarehouseService $warehouseService, WarehouseRepository $warehouseRepository)
     {
         $this->warehouseService = $warehouseService;
         $this->warehouseRepository = $warehouseRepository;
+        $this->subtitle = [
+            [
+                'url' => route('warehouse.index'),
+                'title' => 'Quản lý kho lúa',
+            ]
+        ];
+        $this->page = 'warehouse';
     }
 
     public function index(Request $request)
     {
         $get = $request->input();
+        $page = $this->page;
         $title = 'Quản lý kho lúa';
         $template = 'backend.warehouse.index';
         $warehouses = $this->warehouseRepository->getPaginateByName($get['search'] ?? '');
         return view('backend.dashboard.layout', compact(
+            'page',
             'title',
             'template',
             'warehouses',
@@ -35,13 +46,9 @@ class WarehouseController extends Controller
 
     public function create()
     {
-        $subtitle = [
-            [
-                'url' => route('warehouse.index'),
-                'title' => 'Quản lý kho lúa',
-            ]
-        ];
-        $title = "Thêm kho lúa";
+        $page = $this->page;
+        $title = 'Thêm kho lúa';
+        $subtitle = $this->subtitle;
         $action = "Thêm kho";
         $form = route('warehouse.store');
         $template = "backend.warehouse.form";
@@ -56,8 +63,9 @@ class WarehouseController extends Controller
         ];
 
         return view('backend.dashboard.layout', compact(
-            'subtitle',
+            'page',
             'title',
+            'subtitle',
             'template',
             'action',
             'form',
@@ -77,17 +85,13 @@ class WarehouseController extends Controller
 
     public function edit($id)
     {
-        $warehouse = $this->warehouseRepository->find($id);
-        $subtitle = [
-            [
-                'url' => route('warehouse.index'),
-                'title' => 'Quản lý kho lúa',
-            ]
-        ];
         $title = "Cập nhật kho";
+        $subtitle = $this->subtitle;
+        $page = $this->page;
         $action = "Cập nhật";
         $form = route('warehouse.update', $id);
         $template = 'backend.warehouse.form';
+        $warehouse = $this->warehouseRepository->find($id);
         $config = [
             'css' => [
                 'backend/vendor/mapbox-gl/css/mapbox-gl.min.css',
@@ -98,12 +102,13 @@ class WarehouseController extends Controller
             ],
         ];
         return view('backend.dashboard.layout', compact(
-            'warehouse',
-            'subtitle',
+            'page',
             'title',
+            'subtitle',
             'action',
             'form',
             'template',
+            'warehouse',
             'config'
         ));
     }

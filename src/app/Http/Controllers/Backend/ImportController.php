@@ -12,31 +12,44 @@ class ImportController extends Controller
 {
     protected $customerRepository;
     protected $riceRepository;
+    protected $page;
+    protected $subtitle;
 
     public function __construct(CustomerRepository $customerRepository, RiceRepository $riceRepository) {
         $this->customerRepository = $customerRepository;
         $this->riceRepository = $riceRepository;
+        $this->page = 'import';
+        $this->subtitle = [
+            [
+                'url' => route('import.index'),
+                'title' => 'Quản lý nhập kho',
+            ]            
+        ];
     }
 
-    public function index($warehouseId) {
-        $title = 'Danh sách nhập kho';
-        return view('backend.import.index', compact(
+    public function index() {
+        $page = $this->page;
+        $title = 'Quản lý nhập kho';
+        $template = 'backend.import.index';
+        return view('backend.dashboard.layout', compact(
+            'page',
             'title',
-            'warehouseId'
+            'template',
         ));
     }
 
-    public function create($warehouseId) {
+    public function create() {
+        $page = $this->page;
         $title = 'Nhập kho';
-        $action = 'create';
-        $customers = $this->customerRepository->all();
-        $rice = $this->riceRepository->all();
-        return view('backend.import.modal', compact(
+        $subtitle = $this->subtitle;
+        $action = 'Nhập kho';
+        $template = 'backend.import.form';
+        return view('backend.dashboard.layout', compact(
+            'page',
             'title',
+            'subtitle',
             'action',
-            'customers',
-            'rice',
-            'warehouseId',
+            'template',
         ));
     }
 

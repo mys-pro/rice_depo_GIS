@@ -11,18 +11,22 @@ class DashboardController extends Controller
 {
     protected $userRepository;
     protected $userCatalogueRepository;
+    protected $page;
 
     public function __construct(UserRepository $userRepository, UserCatalogueRepository $userCatalogueRepository)
     {
         $this->userRepository = $userRepository;
         $this->userCatalogueRepository = $userCatalogueRepository;
+        $this->page = 'dashboard';
     }
 
     public function index()
     {
+        $page = $this->page;
         $main = 'home';
         $config = $this->config();
         return view('backend.dashboard.layout', compact(
+            'page',
             'main',
             'config',
         ));
