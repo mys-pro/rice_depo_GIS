@@ -13,7 +13,7 @@
     <tbody>
         @foreach ($customers as $index => $customer)
             <tr>
-                <th data-title="#" class="table-index" scope="row">
+                <th data-title="#" class="table-index tw-50" scope="row">
                     {{ $customers->firstItem() + $index }}
                 </th>
                 <td data-title="Họ tên">
@@ -28,7 +28,7 @@
                 <td data-title="Email">
                     {{ $customer->email }}
                 </td>
-                <td class="table-action text-end align-middle">
+                <td class="table-action text-end align-middle tw-50">
                     <div class="dropdown">
                         <button class="border-0 bg-transparent" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">

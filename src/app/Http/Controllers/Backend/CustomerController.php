@@ -56,9 +56,9 @@ class CustomerController extends Controller
     public function create()
     {
         $page = $this->page;
-        $title = 'Thêm khách hàng';
+        $title = 'Thêm mới khách hàng';
         $subtitle = $this->subtitle;
-        $action = 'Thêm khách hàng';
+        $action = 'Thêm';
         $form = route('customer.store');
         $template = 'backend.customer.form';
         return view('backend.dashboard.layout', compact(
@@ -85,9 +85,9 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $page = $this->page;
-        $title = 'Cập nhật khách hàng';
+        $title = 'Chỉnh sửa khách hàng';
         $subtitle = $this->subtitle;
-        $action = 'Cập nhật';
+        $action = 'Lưu';
         $form = route('customer.update', $id);
         $template = 'backend.customer.form';
         $customer = $this->customerRepository->find($id);

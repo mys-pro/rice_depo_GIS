@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('customer_id');
             $table->unsignedInteger('warehouse_id');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

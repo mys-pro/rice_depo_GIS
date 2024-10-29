@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('import_details', function (Blueprint $table) {
             $table->unsignedInteger('import_id');
             $table->unsignedInteger('rice_id');
-            $table->integer('quantity');
+            $table->integer('weight');
             $table->integer('price');
             $table->timestamps();
             

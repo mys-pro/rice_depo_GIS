@@ -381,6 +381,7 @@
                 const value = $(this)
                     .val()
                     .replace(/[^0-9]/g, "");
+
                 $(this).val(new Intl.NumberFormat("vi-VN").format(value));
             }
         });
@@ -465,6 +466,39 @@
         });
     };
 
+    /****************************
+     * quantity
+     *****************************/
+
+    lib.weight = () => {
+        if ($(document).find(".input-weight").length) {
+            $(document).on(
+                "click",
+                ".input-weight > .input-dash",
+                function (e) {
+                    e.preventDefault();
+                    const input = $(this).siblings("input");
+                    let val = Number(input.val()) || 0;
+
+                    if (val > 0) {
+                        input.val(--val);
+                    }
+                }
+            );
+
+            $(document).on(
+                "click",
+                ".input-weight > .input-plus",
+                function (e) {
+                    e.preventDefault();
+                    const input = $(this).siblings("input");
+                    let val = Number(input.val()) || 0;
+                    input.val(++val);
+                }
+            );
+        }
+    };
+
     $(document).ready(function () {
         lib.select2Main();
         lib.dropImageMain();
@@ -475,5 +509,6 @@
         lib.search();
         lib.filter();
         lib.paginate();
+        lib.weight();
     });
 })(jQuery);

@@ -286,6 +286,50 @@ img {
     font-size: 24px;
 }
 
+.panel-title {
+    font-size: 18px;
+    margin: 0;
+    font-weight: bold;
+    color: #012970;
+}
+
+input.hide-spin::-webkit-outer-spin-button,
+input.hide-spin::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input.hind-spin {
+    -moz-appearance: textfield;
+}
+
+.input-weight {
+    display: flex;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.input-weight button {
+    min-width: 27px;
+    height: 27px;
+    padding: 0;
+}
+
+.input-weight input {
+    height: 27px;
+    text-align: center;
+}
+
+.import-price {
+    box-shadow: none !important;
+    text-align: center;
+}
+
+.import-price:focus {
+    border-color: #dee2e6 !important;
+}
+
 @media (max-width: 576px) {
     .search-bar {
         width: calc(100% - 20px);
@@ -313,15 +357,27 @@ img {
         border: none;
     }
 
-    .table-responsive tbody tr:has(.table-action) td:nth-last-child(2) {
+    .table-responsive
+        tbody
+        tr:has(.table-action)
+        td:nth-last-child(2):not(.tw-50),
+    .table-responsive tbody tr td:not(.tw-50):last-of-type {
         padding-bottom: 20px;
         border-bottom: 1px solid #dee2e6;
     }
 
     .table-responsive tbody tr .table-code:before,
-    .table-responsive tbody tr td:not(.table-action):not(.table-image):before {
+    .table-responsive
+        tbody
+        tr
+        td:not(.table-action):not(.table-image):not(.td-nottitle):before {
         content: attr(data-title) ": ";
         font-weight: bold;
+        padding-bottom: 16px;
+    }
+
+    .table-responsive tbody tr .td-end {
+        text-align: right !important;
     }
 
     .table-responsive tbody tr .table-index::before {
@@ -334,8 +390,7 @@ img {
         height: 250px;
     }
 
-    .table-responsive tbody tr .table-index,
-    .table-responsive tbody tr .table-code {
+    .table-responsive tbody tr .tw-50 {
         width: 50%;
     }
 

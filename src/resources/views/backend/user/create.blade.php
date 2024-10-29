@@ -159,7 +159,7 @@
                 </div>{{-- End: Create and store form --}}
 
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Thêm người dùng</button>
+                    <button type="submit" class="btn btn-primary">{{ $action }}</button>
                 </div>
             </form>
         </div>

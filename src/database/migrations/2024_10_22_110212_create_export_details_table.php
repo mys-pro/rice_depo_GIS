@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('export_details', function (Blueprint $table) {
             $table->unsignedInteger('export_id');
             $table->unsignedInteger('rice_id');
-            $table->integer('quantity');
+            $table->integer('weight');
             $table->integer('price');
             $table->timestamps();
 

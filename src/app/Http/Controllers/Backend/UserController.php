@@ -89,8 +89,9 @@ class UserController extends Controller
 	public function create()
 	{
 		$page = $this->page;
-		$title = "Thêm nhân viên";
+		$title = "Thêm mới nhân viên";
 		$subtitle = $this->subtitle;
+		$action = "Thêm";
 		$form = route('user.store');
 		$template = 'backend.user.create';
 		$warehouses = $this->warehouseRepository->all();
@@ -99,6 +100,7 @@ class UserController extends Controller
 			'page',
 			'title',
 			'subtitle',
+			'action',
 			'form',
 			'template',
 			'warehouses',
@@ -148,6 +150,7 @@ class UserController extends Controller
 		$page = $this->page;
 		$subtitle = $this->subtitle;
 		$subtitle[0]['title'] = $self ? 'Người dùng' : 'Quản lý nhân viên';
+		$action = 'Lưu';
 		$title = "Đổi mật khẩu";
 		$template = 'backend.user.changePass';
 		$user = $this->userRepository->find($id);
@@ -157,6 +160,7 @@ class UserController extends Controller
 			'page',
 			'title',
 			'subtitle',
+			'action',
 			'template',
 			'user',
 			'user_catalogue',
@@ -180,6 +184,7 @@ class UserController extends Controller
 		$title = "Chỉnh sửa";
 		$subtitle = $this->subtitle;
 		$subtitle[0]['title'] = $self ? 'Người dùng' : 'Quản lý nhân viên';
+		$action = "Lưu";
 		$template = 'backend.user.edit';
 		$user = $this->userRepository->find($id);
 		if (isset($user->birthday)) {
@@ -193,6 +198,7 @@ class UserController extends Controller
 			'self',
 			'title',
 			'subtitle',
+			'action',
 			'template',
 			'user',
 			'warehouses',

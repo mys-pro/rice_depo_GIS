@@ -47,9 +47,9 @@ class WarehouseController extends Controller
     public function create()
     {
         $page = $this->page;
-        $title = 'Thêm kho lúa';
+        $title = 'Thêm mới kho lúa';
         $subtitle = $this->subtitle;
-        $action = "Thêm kho";
+        $action = "Thêm";
         $form = route('warehouse.store');
         $template = "backend.warehouse.form";
         $config = [
@@ -85,10 +85,10 @@ class WarehouseController extends Controller
 
     public function edit($id)
     {
-        $title = "Cập nhật kho";
+        $title = "Chỉnh sửa kho lúa";
         $subtitle = $this->subtitle;
         $page = $this->page;
-        $action = "Cập nhật";
+        $action = "Lưu";
         $form = route('warehouse.update', $id);
         $template = 'backend.warehouse.form';
         $warehouse = $this->warehouseRepository->find($id);

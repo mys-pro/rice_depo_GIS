@@ -20,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
 
         'App\Services\Interfaces\CustomerServiceInterface' => 'App\Services\CustomerService',
         'App\Repositories\Interfaces\CustomerRepositoryInterface' => 'App\Repositories\CustomerRepository',
+
+        'App\Services\Interfaces\ImportServiceInterface' => 'App\Services\ImportService',
+        'App\Repositories\Interfaces\ImportRepositoryInterface' => 'App\Repositories\ImportRepository',
     ];
     /**
      * Register any application services.

@@ -72,5 +72,8 @@ Route::group(['prefix' => 'customer', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'import', 'middleware' => 'auth'], function () {
     Route::get('index', [ImportController::class, 'index'])->name('import.index');
     Route::get('create', [ImportController::class, 'create'])->name('import.create');
-    Route::post('store/{warehouseId}', [ImportController::class, 'store'])->name('import.store');
+    Route::post('store', [ImportController::class, 'store'])->name('import.store');
+    Route::get('edit/{id}', [ImportController::class, 'edit'])->name('import.edit');
+    Route::post('update/{id}', [ImportController::class, 'update'])->name('import.update');
+    // Route::get('delete/{id}', [ImportController::class, 'delete'])->name('import.delete');
 }); // END: Import

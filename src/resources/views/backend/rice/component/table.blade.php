@@ -11,10 +11,10 @@
     <tbody>
         @foreach ($rice as $val)
             <tr>
-                <th data-title="Mã số" class="table-code">{{ $val->id }}</th>
+                <th data-title="Mã số" class="table-code tw-50">{{ $val->id }}</th>
                 <td data-title="Tên lúa">{{ $val->name }}</td>
-                <td data-title="Ngày tạo">{{ $val->created_at }}</td>
-                <td class="table-action text-end ">
+                <td data-title="Ngày tạo">{{ $val->created_at->format('d-m-Y') }}</td>
+                <td class="table-action text-end tw-50">
                     <div class="dropdown">
                         <button class="border-0 bg-transparent" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">

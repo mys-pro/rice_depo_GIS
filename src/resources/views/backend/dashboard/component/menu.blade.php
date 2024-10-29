@@ -26,14 +26,14 @@
 <li class="nav-item">
     <a class="nav-link {{ $page == 'import' ? '' : 'collapsed' }}" href="{{ route('import.index') }}">
         <i class="bi bi-arrow-bar-down"></i>
-        <span>Nhập kho</span>
+        <span>Quản lý nhập kho</span>
     </a>
 </li><!-- End Import Nav -->
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="">
         <i class="bi bi-arrow-bar-up"></i>
-        <span>Xuất kho</span>
+        <span>Quản lý xuất kho</span>
     </a>
 </li><!-- End Export Nav -->
 

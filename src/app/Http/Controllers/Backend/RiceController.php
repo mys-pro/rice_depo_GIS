@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRiceRequest;
 use App\Http\Requests\UpdateRiceRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Repositories\Interfaces\RiceRepositoryInterface as RiceRepository;
 use App\Services\Interfaces\RiceServiceInterface as RiceService;
 
@@ -58,9 +59,9 @@ class RiceController extends Controller
     public function create()
     {
         $page = $this->page;
-        $title = 'Thêm lúa';
+        $title = 'Thêm mới lúa';
         $subtitle = $this->subtitle;
-        $action = 'Thêm lúa';
+        $action = 'Thêm';
         $form = route('rice.store');
         $template = 'backend.rice.form';
         return view('backend.dashboard.layout', compact(
@@ -87,9 +88,9 @@ class RiceController extends Controller
     public function edit($id)
     {
         $page = $this->page;
-        $title = 'Cập nhật lúa';
+        $title = 'Chỉnh sửa lúa';
         $subtitle = $this->subtitle;
-        $action = 'Cập nhật';
+        $action = 'Lưu';
         $form = route('rice.update', $id);
         $template = 'backend.rice.form';
         $rice = $this->riceRepository->find($id);

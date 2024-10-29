@@ -13,7 +13,7 @@
     <tbody>
         @foreach ($warehouses as $index => $warehouse)
             <tr>
-                <th data-title="#" class="table-index align-middle" scope="row">
+                <th data-title="#" class="table-index align-middle tw-50" scope="row">
                     {{ $warehouses->firstItem() + $index }}
                 </th>
                 <td class="table-image text-center">
@@ -29,7 +29,7 @@
                         {{ $warehouse->status == 1 ? 'Hoạt động' : 'Ngương hoạt động' }}
                     </span>
                 </td>
-                <td class="table-action text-end align-middle">
+                <td class="table-action text-end align-middle tw-50">
                     <div class="dropdown">
                         <button class="border-0 bg-transparent" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">

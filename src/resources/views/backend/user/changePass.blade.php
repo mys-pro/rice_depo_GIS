@@ -58,7 +58,7 @@
                                     </div>
                                 </div>
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary">{{ $action }}</button>
                                 </div>
                             </form><!-- End Profile Edit Form -->
                         </div>
