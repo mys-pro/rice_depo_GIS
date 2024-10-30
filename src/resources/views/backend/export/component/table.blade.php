@@ -1,22 +1,22 @@
 <table class="table table-responsive">
     <thead>
         <tr>
-            <th scope="col">Mã số</th>
-            <th scope="col">Kho</th>
-            <th scope="col">Nhân viên</th>
-            <th scope="col">Khách hàng</th>
-            <th scope="col">Ngày tạo</th>
-            <th scope="col" class="text-end"></th>
+            <th scope="col" class="align-middle">Mã số</th>
+            <th scope="col" class="align-middle">Kho</th>
+            <th scope="col" class="align-middle">Nhân viên</th>
+            <th scope="col" class="align-middle">Khách hàng</th>
+            <th scope="col" class="align-middle">Ngày tạo</th>
+            <th scope="col" class="align-middle text-end"></th>
         </tr>
     </thead>
     <tbody>
         @foreach ($exports as $export)
             <tr>
-                <th data-title="Mã số" class="table-code tw-50">{{ $export->id }}</th>
-                <td data-title="Kho">{{ $export->warehouse_name }}</td>
-                <td data-title="Nhân viên">{{ $export->user_name }}</td>
-                <td data-title="Khách hàng">{{ $export->customer_name }}</td>
-                <td data-title="Ngày tạo">{{ $export->created_at->format('d-m-Y') }}</td>
+                <th data-title="Mã số" class="table-code tw-50 align-middle">{{ $export->id }}</th>
+                <td data-title="Kho" class="align-middle">{{ $export->warehouse_name }}</td>
+                <td data-title="Nhân viên" class="align-middle">{{ $export->user_name }}</td>
+                <td data-title="Khách hàng" class="align-middle">{{ $export->customer_name }}</td>
+                <td data-title="Ngày tạo" class="text-nowrap align-middle">{{ $export->created_at->format('d-m-Y') }}</td>
                 <td class="table-action text-end tw-50">
                     <div class="dropdown">
                         <button class="border-0 bg-transparent" type="button" data-bs-toggle="dropdown"
