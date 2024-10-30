@@ -47,4 +47,8 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->where('u.id', '=', $id)
             ->get();
     }
+
+    public function getTotalByWarehouse($warehouseId) {
+        return $this->model->where('warehouse_id', $warehouseId)->count('id');
+    }
 }

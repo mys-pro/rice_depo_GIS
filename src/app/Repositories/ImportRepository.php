@@ -35,6 +35,42 @@ class ImportRepository extends BaseRepository implements ImportRepositoryInterfa
             ->where('u.name', 'LIKE', "%{$name}%")
             ->orWhere('ct.name', 'LIKE', "%{$name}%")
             ->orWhere('wh.name', 'LIKE', "%{$name}%")
+            ->orderBy('i.id')
+            ->paginate(20);
+    }
+
+    public function getWeight($warehouseId, $riceId)
+    {
+        return $this->model->from('imports as i')
+            ->join('import_details as id', 'id.import_id', '=', 'i.id')
+            ->where('i.warehouse_id', $warehouseId)
+            ->where('id.rice_id', $riceId)
+            ->sum('id.weight');
+    }
+
+    public function statistical($warehouseId, $from = null, $to = null)
+    {
+        $from = $from ?? date('Y-m-01');
+        $to = $to ?? date('Y-m-t');
+        return $this->model->from('imports as i')
+            ->select('r.name', \DB::raw('SUM(id.weight) as total_weight'))
+            ->join('import_details as id', 'i.id', '=', 'id.import_id')
+            ->join('rice as r', 'id.rice_id', '=', 'r.id')
+            ->whereBetween('i.created_at', [$from, $to])
+            ->where('i.warehouse_id', $warehouseId)
+            ->groupBy('r.id')
             ->get();
+
+    }
+
+    public function getPriceTotal($warehouseId, $from = null, $to = null)
+    {
+        $from = $from ?? date('Y-m-01');
+        $to = $to ?? date('Y-m-t');
+        return $this->model->from('imports as i')
+            ->join('import_details as id', 'i.id', '=', 'id.import_id')
+            ->whereBetween('i.created_at', [$from, $to])
+            ->where('i.warehouse_id', $warehouseId)
+            ->sum(\DB::raw('id.weight * id.price'));
     }
 }

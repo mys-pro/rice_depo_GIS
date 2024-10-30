@@ -27,9 +27,11 @@ class DatabaseSeeder extends Seeder
         //     'user_catalogue_id' => '1',
         // ]);
 
-        // $this->call([
+        $this->call([
             // UserSeeder::class,
         //     CustomerSeeder::class,
-        // ]);
+            // ImportSeeder::class
+            ExportSeeder::class
+        ]);
     }
 }

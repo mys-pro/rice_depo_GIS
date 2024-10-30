@@ -9,7 +9,7 @@
             </ul>
         </div>
     @endif
-    <form id="import-form" method="POST" action="{{ $form }}">
+    <form id="export-form" method="POST" action="{{ $form }}">
         @csrf
         <div class="row g-3">
             <div class="col-12">
@@ -19,15 +19,15 @@
                         <div class="row g-3 mb-3">
                             <div class="col-sm-6 col-12">
                                 <div class="form-outline">
-                                    <select class="form-select use-select2" id="import-warehouse" name="warehouse_id">
+                                    <select class="form-select use-select2" id="export-warehouse" name="warehouse_id">
                                         <option value="0">Chọn kho lúa</option>
                                         @foreach ($warehouses as $warehouse)
                                             <option value="{{ $warehouse->id }}"
-                                                {{ old('warehouse_id') == $warehouse->id || (isset($import) && $import->warehouse_id == $warehouse->id) ? 'selected' : '' }}>
+                                                {{ old('warehouse_id') == $warehouse->id || (isset($export) && $export->warehouse_id == $warehouse->id) ? 'selected' : '' }}>
                                                 {{ $warehouse->name }}</option>
                                         @endforeach
                                     </select>
-                                    <label for="import-warehouse">
+                                    <label for="export-warehouse">
                                         Kho lúa
                                         <span class="text-danger">*</span>
                                     </label>
@@ -36,15 +36,15 @@
 
                             <div class="col-sm-6 col-12">
                                 <div class="form-outline">
-                                    <select class="form-select use-select2" id="import-customer" name="customer_id">
+                                    <select class="form-select use-select2" id="export-customer" name="customer_id">
                                         <option value="0">Chọn khách hàng</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->id }}"
-                                                {{ old('customer_id') == $customer->id || (isset($import) && $import->customer_id == $customer->id) ? 'selected' : '' }}>
+                                                {{ old('customer_id') == $customer->id || (isset($export) && $export->customer_id == $customer->id) ? 'selected' : '' }}>
                                                 {{ $customer->name }}</option>
                                         @endforeach
                                     </select>
-                                    <label for="import-customer">
+                                    <label for="export-customer">
                                         Khách hàng
                                         <span class="text-danger">*</span>
                                     </label>
@@ -55,9 +55,9 @@
                         <div class="row g-3 mb-3">
                             <div class="col-12">
                                 <div class="form-outline">
-                                    <textarea type="text" class="form-control" id="import-note" name="note" placeholder="Ghi chú"
-                                        style="height: 100px">{{ $import->note ?? old('note') }}</textarea>
-                                    <label for="import-note" class="form-label fw-semibold">Ghi chú</label>
+                                    <textarea type="text" class="form-control" id="export-note" name="note" placeholder="Ghi chú"
+                                        style="height: 100px">{{ $export->note ?? old('note') }}</textarea>
+                                    <label for="export-note" class="form-label fw-semibold">Ghi chú</label>
                                 </div>
                             </div>
                         </div>
@@ -128,14 +128,14 @@
                                                         </div>
                                                     </td>
                                                     <td class="table-action text-end align-middle tw-50">
-                                                        <button class="import_detail-delete border-0 bg-transparent">
+                                                        <button class="export_detail-delete border-0 bg-transparent">
                                                             <i class="bi bi-trash3 text-danger"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @elseif(isset($import))
-                                            @foreach ($import->import_detail as $index => $val)
+                                        @elseif(isset($export))
+                                            @foreach ($export->export_detail as $index => $val)
                                                 <tr>
                                                     <th data-title="#" class="table-index align-middle tw-50"
                                                         scope="row">{{ $index + 1 }}
@@ -177,7 +177,7 @@
                                                         </div>
                                                     </td>
                                                     <td class="table-action text-end align-middle tw-50">
-                                                        <button class="import_detail-delete border-0 bg-transparent">
+                                                        <button class="export_detail-delete border-0 bg-transparent">
                                                             <i class="bi bi-trash3 text-danger"></i>
                                                         </button>
                                                     </td>
@@ -223,7 +223,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="table-action text-end align-middle tw-50">
-                                                    <button class="import_detail-delete border-0 bg-transparent">
+                                                    <button class="export_detail-delete border-0 bg-transparent">
                                                         <i class="bi bi-trash3 text-danger"></i>
                                                     </button>
                                                 </td>
@@ -234,7 +234,7 @@
                             </div>
                         </div>
 
-                        <button id="import_detail-add-btn" class="btn btn-secondary">
+                        <button id="export_detail-add-btn" class="btn btn-secondary">
                             Thêm hàng
                         </button>
                     </div>
@@ -252,7 +252,7 @@
                                 <span class="price">{{ $total ?? '0' }}</span>
                                 <span class="price-unit">₫</span>
                             </div>
-                            <button id="import-submit" class="btn btn-primary">{{ $action }}</button>
+                            <button id="export-submit" class="btn btn-primary">{{ $action }}</button>
                         </div>
                     </div>
                 </div>
@@ -261,8 +261,8 @@
     </form>
 </section>
 <script>
-    @if (isset($import))
-        let inputIndex = {{ count($import->import_detail) - 1 }};
+    @if (isset($export))
+        let inputIndex = {{ count($export->export_detail) - 1 }};
     @else
         let inputIndex = {{ old('inputs') ? count(old('inputs', [])) - 1 : 0 }};
     @endif

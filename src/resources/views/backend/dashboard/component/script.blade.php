@@ -5,6 +5,7 @@
         {!! '<script src="' . asset($val) . '?v=' . time() . '"></script>' !!}
     @endforeach
 @endif
+<script src="{{ asset('backend/vendor/chart.js/chart.umd.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('backend/vendor/select2/js/select2.min.js') }}?v={{ time() }}"></script>
 <script src="{{ asset('backend/vendor/tinymce/tinymce.min.js') }}?v={{ time() }}"></script>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Ajax\MapController;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ExportController;
 use App\Http\Controllers\Backend\ImportController;
 use App\Http\Controllers\Backend\RiceController;
 use App\Http\Controllers\Backend\UserController;
@@ -23,6 +24,7 @@ Route::get('dashboard/index', [DashboardController::class, 'index'])->name('dash
 Route::group(['prefix' => 'ajax', 'middleware' => 'auth'], function () {
     Route::get('map/getMarker', [MapController::class, 'getMarker'])->name('ajax.map.getMarker');
     Route::get('map/search', [MapController::class, 'search'])->name('ajax.map.search');
+    Route::get('map/statistical/{id}', [MapController::class, 'statistical'])->name('ajax.map.statistical');
 }); // END: AJAX
 
 // BEGIN: Warehouse
@@ -75,5 +77,15 @@ Route::group(['prefix' => 'import', 'middleware' => 'auth'], function () {
     Route::post('store', [ImportController::class, 'store'])->name('import.store');
     Route::get('edit/{id}', [ImportController::class, 'edit'])->name('import.edit');
     Route::post('update/{id}', [ImportController::class, 'update'])->name('import.update');
-    // Route::get('delete/{id}', [ImportController::class, 'delete'])->name('import.delete');
+    Route::get('delete/{id}', [ImportController::class, 'delete'])->name('import.delete');
 }); // END: Import
+
+// BEGIN: Export 
+Route::group(['prefix' => 'export', 'middleware' => 'auth'], function () {
+    Route::get('index', [ExportController::class, 'index'])->name('export.index');
+    Route::get('create', [ExportController::class, 'create'])->name('export.create');
+    Route::post('store', [ExportController::class, 'store'])->name('export.store');
+    Route::get('edit/{id}', [ExportController::class, 'edit'])->name('export.edit');
+    Route::post('update/{id}', [ExportController::class, 'update'])->name('export.update');
+    Route::get('delete/{id}', [ExportController::class, 'delete'])->name('export.delete');
+}); // END: Export

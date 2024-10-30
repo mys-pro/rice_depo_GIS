@@ -1,9 +1,9 @@
 (function ($) {
     "use strict";
-    let wh = {};
+    let rd = {};
 
-    wh.addRow = () => {
-        $(document).on("click", "#import_detail-add-btn", function (e) {
+    rd.addRow = () => {
+        $(document).on("click", "#import_detail-add-btn, #export_detail-add-btn", function (e) {
             e.preventDefault();
             inputIndex++;
             let riceOption = "";
@@ -17,7 +17,7 @@
                     inputIndex + 1
                 }</th>` +
                 '<td data-title="Lúa" class="align-middle">' +
-                `<select class="form-select import-rice use-select2" name="inputs[${inputIndex}][rice_id]">` +
+                `<select class="form-select use-select2" name="inputs[${inputIndex}][rice_id]">` +
                 '<option value="0">Chọn lúa</option>' +
                 riceOption +
                 "</select>" +
@@ -32,8 +32,8 @@
                 '<td data-title="Đơn giá" class="align-middle tw-50">' +
                 '<div class="input-group">' +
                 `<input name="inputs[${inputIndex}][price]" type="text"` +
-                'class="form-control input-format import-price border-end-0 pe-0" value="0">' +
-                '<span class="input-group-text bg-transparent border-start-0">VNĐ</span>' +
+                'class="form-control input-format input-price border-end-0 pe-0" value="0">' +
+                '<span class="input-group-text bg-transparent border-start-0">₫</span>' +
                 "</div>" +
                 "</td>" +
                 '<td class="table-action text-end align-middle tw-50">' +
@@ -50,23 +50,26 @@
                     : $(this).hasClass("w-100")
                     ? "100%"
                     : "style",
-                dropdownParent: $("#import-form"),
+                dropdownParent: $("#import-form, #export-form"),
             });
+
+            rd.totalPrice();
         });
     };
 
-    wh.deleteRow = () => {
-        $(document).on("click", ".import_detail-delete", function (e) {
+    rd.deleteRow = () => {
+        $(document).on("click", ".import_detail-delete, .export_detail-delete", function (e) {
             e.preventDefault();
             if (inputIndex > 0) {
                 inputIndex--;
                 $(this).closest("tr").remove();
-                wh.loadIndex();
+                rd.loadIndex();
+                rd.totalPrice();
             }
         });
     };
 
-    wh.loadIndex = () => {
+    rd.loadIndex = () => {
         const detailList = $(".table tbody tr");
         detailList.each((index, val) => {
             $(val)
@@ -87,8 +90,51 @@
         });
     };
 
+    rd.totalPrice = () => {
+        let total = 0;
+        const detailList = $(".table tbody tr");
+
+        detailList.each((index, val) => {
+            const weight = $(val).find(
+                `input[name="inputs[${index}][weight]"]`
+            );
+            const weightVal = parseInt(weight.val()) || 0;
+
+            const price = $(val).find(`input[name="inputs[${index}][price]"]`);
+            const priceVal = parseInt(price.val().replace(/[^0-9]/g, "")) || 0;
+
+            total += weightVal * priceVal;
+        });
+
+        $(".total-price .price").html(
+            new Intl.NumberFormat("vi-VN").format(total)
+        );
+    };
+
+    rd.weightInput = () => {
+        $(document).on(
+            "input",
+            'input[name^="inputs"][name$="[weight]"]',
+            function () {
+                rd.totalPrice();
+            }
+        )
+    };
+
+    rd.priceInput = () => {
+        $(document).on(
+            "input",
+            'input[name^="inputs"][name$="[price]"]',
+            function () {
+                rd.totalPrice();
+            }
+        );
+    };
+
     $(document).ready(function () {
-        wh.addRow();
-        wh.deleteRow();
+        rd.addRow();
+        rd.deleteRow();
+        rd.weightInput();
+        rd.priceInput();
     });
 })(jQuery);

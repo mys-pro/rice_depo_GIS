@@ -5,14 +5,27 @@ namespace App\Http\Controllers\Ajax;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\WarehouseRepositoryInterface as WarehouseRepository;
+use App\Repositories\Interfaces\ImportRepositoryInterface as ImportRepository;
+use App\Repositories\Interfaces\ExportRepositoryInterface as ExportRepository;
+use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 
 class MapController extends Controller
 {
     protected $warehouseRepository;
+    protected $importRepository;
+    protected $exportRepository;
+    protected $userRepository;
 
-    public function __construct(WarehouseRepository $warehouseRepository)
-    {
+    public function __construct(
+        WarehouseRepository $warehouseRepository,
+        ImportRepository $importRepository,
+        ExportRepository $exportRepository,
+        UserRepository $userRepository
+    ) {
         $this->warehouseRepository = $warehouseRepository;
+        $this->importRepository = $importRepository;
+        $this->exportRepository = $exportRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function getMarker()
@@ -55,6 +68,25 @@ class MapController extends Controller
         $warehouses = $this->warehouseRepository->findByName($get['name'] ?? '');
         return view('backend.dashboard.home.location', compact(
             'warehouses',
+        ));
+    }
+
+    public function statistical($id, Request $request)
+    {
+        $get = $request->input();
+        $importStatistical = $this->importRepository->statistical($id, $get['from'] ?? null, $get['to'] ?? null);
+        $importTotalPrice = $this->importRepository->getPriceTotal($id, $get['from'] ?? null, $get['to'] ?? null);
+        $importTotalPrice = number_format($importTotalPrice, 0, '', '.');
+        $exportStatistical = $this->exportRepository->statistical($id, $get['from'] ?? null, $get['to'] ?? null);
+        $exportTotalPrice = $this->exportRepository->getPriceTotal($id, $get['from'] ?? null, $get['to'] ?? null);
+        $exportTotalPrice = number_format($exportTotalPrice, 0, '', '.');
+        $userTotal = $this->userRepository->getTotalByWarehouse($id);
+        return view('backend.dashboard.home.statistical', compact(
+            'importStatistical',
+            'importTotalPrice',
+            'exportStatistical',
+            'exportTotalPrice',
+            'userTotal',
         ));
     }
 }

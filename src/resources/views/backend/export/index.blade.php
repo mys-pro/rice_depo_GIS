@@ -1,13 +1,13 @@
-@include('backend.import.component.breadcrumb')
+@include('backend.export.component.breadcrumb')
 <section class="section">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Danh sách nhập kho</h5>
-                    @include('backend.import.component.filter')
+                    <h5 class="card-title">Danh sách xuất kho</h5>
+                    @include('backend.export.component.filter')
                     <div class="card-content">
-                        @include('backend.import.component.table')
+                        @include('backend.export.component.table')
                     </div>
                 </div>
             </div>

@@ -207,6 +207,73 @@
         }
     };
 
+    lib.locationDetail = () => {
+        $(document).on("click", ".warehouse-info-btn", function () {
+            const id = $(this).data("id");
+            $("#sidebar-start").empty();
+            $.ajax({
+                url: "ajax/map/statistical/" + id,
+                type: "GET",
+                success: function (res) {
+                    const sidebarStart = $(document).find("#sidebar-start");
+                    sidebarStart.html(res);
+
+                    $("#sidebar-start").offcanvas("show");
+                    lib.inputDate(id);
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                },
+            });
+        });
+    };
+
+    lib.inputDate = (id) => {
+        $(document).on("input", "#date-from", function () {
+            const from = $(this).val();
+            const to = $(document).find("#date-to").val();
+            $.ajax({
+                url: "ajax/map/statistical/" + id,
+                type: "GET",
+                data: {
+                    from: from,
+                    to: to,
+                },
+                success: function (res) {
+                    const sidebarStart = $(document).find("#sidebar-start");
+                    sidebarStart
+                        .find(".statistical-content")
+                        .html($(res).find(".statistical-content").html());
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                },
+            });
+        });
+
+        $(document).on("input", "#date-to", function () {
+            const from = $(document).find("#date-from").val();
+            const to = $(this).val();
+            $.ajax({
+                url: "ajax/map/statistical/" + id,
+                type: "GET",
+                data: {
+                    from: from,
+                    to: to,
+                },
+                success: function (res) {
+                    const sidebarStart = $(document).find("#sidebar-start");
+                    sidebarStart
+                        .find(".statistical-content")
+                        .html($(res).find(".statistical-content").html());
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                },
+            });
+        });
+    };
+
     lib.mapboxInit = () => {
         if ($(document).find("#map").length) {
             let marker = new mapboxgl.Marker();
@@ -214,6 +281,7 @@
             if (!$("#map").hasClass("map-form")) {
                 lib.load(marker);
                 lib.getLocation(marker);
+                lib.locationDetail();
             } else {
                 lib.point(marker);
                 lib.loadPoint(marker);
@@ -482,6 +550,7 @@
 
                     if (val > 0) {
                         input.val(--val);
+                        lib.totalPrice();
                     }
                 }
             );
@@ -494,9 +563,31 @@
                     const input = $(this).siblings("input");
                     let val = Number(input.val()) || 0;
                     input.val(++val);
+                    lib.totalPrice();
                 }
             );
         }
+    };
+
+    lib.totalPrice = () => {
+        let total = 0;
+        const detailList = $(".table tbody tr");
+
+        detailList.each((index, val) => {
+            const weight = $(val).find(
+                `input[name="inputs[${index}][weight]"]`
+            );
+            const weightVal = parseInt(weight.val()) || 0;
+
+            const price = $(val).find(`input[name="inputs[${index}][price]"]`);
+            const priceVal = parseInt(price.val().replace(/[^0-9]/g, "")) || 0;
+
+            total += weightVal * priceVal;
+        });
+
+        $(".total-price .price").html(
+            new Intl.NumberFormat("vi-VN").format(total)
+        );
     };
 
     $(document).ready(function () {

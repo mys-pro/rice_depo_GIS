@@ -1,6 +1,5 @@
 <li class="nav-item">
-    <a class="nav-link {{ $page == 'dashboard' ? '' : 'collapsed' }}"
-        href="{{ route('dashboard.index') }}">
+    <a class="nav-link {{ $page == 'dashboard' ? '' : 'collapsed' }}" href="{{ route('dashboard.index') }}">
         <i class="bi bi-map"></i>
         <span>Bản đồ</span>
     </a>
@@ -9,8 +8,7 @@
 <li class="nav-heading">Kho lúa</li>
 
 <li class="nav-item">
-    <a class="nav-link {{ $page == 'warehouse' ? '' : 'collapsed' }}"
-        href="{{ route('warehouse.index') }}">
+    <a class="nav-link {{ $page == 'warehouse' ? '' : 'collapsed' }}" href="{{ route('warehouse.index') }}">
         <i class="bi bi-house"></i>
         <span>Quản lý kho lúa</span>
     </a>
@@ -31,7 +29,7 @@
 </li><!-- End Import Nav -->
 
 <li class="nav-item">
-    <a class="nav-link collapsed" href="">
+    <a class="nav-link {{ $page == 'export' ? '' : 'collapsed' }}" href="{{ route('export.index') }}">
         <i class="bi bi-arrow-bar-up"></i>
         <span>Quản lý xuất kho</span>
     </a>

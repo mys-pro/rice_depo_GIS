@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Services\Interfaces\ImportServiceInterface;
-use App\Repositories\Interfaces\ImportRepositoryInterface as ImportRepository;
+use App\Services\Interfaces\ExportServiceInterface;
+use App\Repositories\Interfaces\ExportRepositoryInterface as ExportRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class ImportService implements ImportServiceInterface
+class ExportService implements ExportServiceInterface
 {
-    protected $importRepository;
+    protected $exportRepository;
 
-    public function __construct(ImportRepository $importRepository)
+    public function __construct(ExportRepository $exportRepository)
     {
-        $this->importRepository = $importRepository;
+        $this->exportRepository = $exportRepository;
     }
 
     public function create($request)
@@ -21,7 +21,7 @@ class ImportService implements ImportServiceInterface
         DB::beginTransaction();
         try {
             $payload = $request->except('_token', 'send');
-            $import = $this->importRepository->create(
+            $export = $this->exportRepository->create(
                 [
                     'user_id' => Auth::id(),
                     'customer_id' => $payload['customer_id'],
@@ -31,7 +31,7 @@ class ImportService implements ImportServiceInterface
             );
 
             foreach ($payload['inputs'] as $item) {
-                $import->import_detail()->create($item);
+                $export->export_detail()->create($item);
             }
 
             DB::commit();
@@ -48,9 +48,9 @@ class ImportService implements ImportServiceInterface
         DB::beginTransaction();
         try {
             $payload = $request->except('_token', 'send');
-            $import = $this->importRepository->find($id);
+            $export = $this->exportRepository->find($id);
 
-            $import->update(
+            $export->update(
                 [
                     'customer_id' => $payload['customer_id'],
                     'warehouse_id' => $payload['warehouse_id'],
@@ -58,12 +58,12 @@ class ImportService implements ImportServiceInterface
                 ]
             );
 
-            $currentRiceIds = $import->import_detail()->pluck('rice_id')->toArray();
+            $currentRiceIds = $export->export_detail()->pluck('rice_id')->toArray();
 
             foreach ($payload['inputs'] as $item) {
                 if (in_array($item['rice_id'], $currentRiceIds)) {
-                    $detail = $import->import_detail()
-                        ->where('import_id', $import->id)
+                    $detail = $export->export_detail()
+                        ->where('export_id', $export->id)
                         ->where('rice_id', $item['rice_id'])
                         ->first();
                     if ($detail) {
@@ -71,12 +71,12 @@ class ImportService implements ImportServiceInterface
                         $currentRiceIds = array_diff($currentRiceIds, [$item['rice_id']]);
                     }
                 } else {
-                    $import->import_detail()->create($item);
+                    $export->export_detail()->create($item);
                 }
             }
 
             if (!empty($currentRiceIds)) {
-                $import->import_detail()->whereIn('rice_id', $currentRiceIds)->delete();
+                $export->export_detail()->whereIn('rice_id', $currentRiceIds)->delete();
             }
 
             DB::commit();
@@ -92,9 +92,9 @@ class ImportService implements ImportServiceInterface
     {
         DB::beginTransaction();
         try {
-            $import = $this->importRepository->find($id);
-            $import->import_detail()->delete();
-            $import->delete();
+            $export = $this->exportRepository->find($id);
+            $export->export_detail()->delete();
+            $export->delete(); 
             DB::commit();
             return true;
         } catch (\Exception $e) {

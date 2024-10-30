@@ -3,23 +3,22 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreImportRequest;
-use App\Http\Requests\UpdateImportRequest;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreExportRequest;
+use App\Http\Requests\UpdateExportRequest;
 use App\Repositories\Interfaces\WarehouseRepositoryInterface as WarehouseRepository;
 use App\Repositories\Interfaces\CustomerRepositoryInterface as CustomerRepository;
 use App\Repositories\Interfaces\RiceRepositoryInterface as RiceRepository;
-use App\Repositories\Interfaces\ImportRepositoryInterface as ImportRepository;
-use App\Services\Interfaces\ImportServiceInterface as ImportService;
-use Illuminate\Support\Carbon;
+use App\Repositories\Interfaces\ExportRepositoryInterface as ExportRepository;
+use App\Services\Interfaces\ExportServiceInterface as ExportService;
 
-class ImportController extends Controller
+class ExportController extends Controller
 {
     protected $warehouseRepository;
     protected $customerRepository;
     protected $riceRepository;
-    protected $importRepository;
-    protected $importService;
+    protected $exportRepository;
+    protected $exportService;
     protected $page;
     protected $subtitle;
 
@@ -27,19 +26,19 @@ class ImportController extends Controller
         WarehouseRepository $warehouseRepository,
         CustomerRepository $customerRepository,
         RiceRepository $riceRepository,
-        ImportRepository $importRepository,
-        ImportService $importService
+        ExportRepository $exportRepository,
+        ExportService $exportService,
     ) {
         $this->warehouseRepository = $warehouseRepository;
         $this->customerRepository = $customerRepository;
         $this->riceRepository = $riceRepository;
-        $this->importRepository = $importRepository;
-        $this->importService = $importService;
-        $this->page = 'import';
+        $this->exportRepository = $exportRepository;
+        $this->exportService = $exportService;
+        $this->page = 'export';
         $this->subtitle = [
             [
-                'url' => route('import.index'),
-                'title' => 'Quản lý nhập kho',
+                'url' => route('export.index'),
+                'title' => 'Quản lý xuất kho',
             ]
         ];
     }
@@ -48,26 +47,25 @@ class ImportController extends Controller
     {
         $get = $request->input();
         $page = $this->page;
-        $title = 'Quản lý nhập kho';
-        $template = 'backend.import.index';
-
-        $imports = $this->importRepository->getByName($get['search'] ?? '');
+        $title = 'Quản lý xuất kho';
+        $template = 'backend.export.index';
+        $exports = $this->exportRepository->getByName($get['search'] ?? '');
         return view('backend.dashboard.layout', compact(
             'page',
             'title',
             'template',
-            'imports',
+            'exports',
         ));
     }
 
     public function create()
     {
         $page = $this->page;
-        $title = 'Thêm mới nhập kho';
+        $title = 'Thêm mới xuất kho';
         $subtitle = $this->subtitle;
         $action = 'Xác nhận';
-        $form = route('import.store');
-        $template = 'backend.import.form';
+        $form = route('export.store');
+        $template = 'backend.export.form';
         $config = $this->config();
 
         $warehouses = $this->warehouseRepository->all();
@@ -87,34 +85,33 @@ class ImportController extends Controller
         ));
     }
 
-    public function store(StoreImportRequest $request)
+    public function store(StoreExportRequest $request)
     {
-        if ($this->importService->create($request)) {
+        if ($this->exportService->create($request)) {
             flash()->success('Thêm mới bản ghi thành công.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         } else {
             flash()->error('Thêm mới bản ghi thất bại.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         }
     }
 
     public function edit($id)
     {
         $page = $this->page;
-        $title = 'Chỉnh sửa nhập kho';
+        $title = 'Chỉnh sửa xuất kho';
         $subtitle = $this->subtitle;
         $action = 'Lưu';
-        $form = route('import.update', $id);
-        $template = 'backend.import.form';
+        $form = route('export.update', $id);
+        $template = 'backend.export.form';
         $config = $this->config();
 
         $warehouses = $this->warehouseRepository->all();
         $customers = $this->customerRepository->all();
         $rice = $this->riceRepository->all();
-        $import = $this->importRepository->findById($id, ['*'], ['import_detail']);
-
+        $export = $this->exportRepository->findById($id, ['*'], ['export_detail']);
         $total = 0;
-        foreach($import->import_detail as $item) {
+        foreach ($export->export_detail as $item) {
             $total += ($item->weight * $item->price);
         }
         $total = number_format($total, 0, '', '.');
@@ -124,7 +121,7 @@ class ImportController extends Controller
             'subtitle',
             'action',
             'form',
-            'import',
+            'export',
             'template',
             'config',
             'warehouses',
@@ -134,25 +131,25 @@ class ImportController extends Controller
         ));
     }
 
-    public function update($id, UpdateImportRequest $request)
+    public function update($id, UpdateExportRequest $request)
     {
-        if ($this->importService->update($id, $request)) {
+        if ($this->exportService->update($id, $request)) {
             flash()->success('Cập nhật bản ghi thành công.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         } else {
             flash()->error('Cập nhật bản ghi thất bại.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         }
     }
 
     public function delete($id)
     {
-        if ($this->importService->delete($id)) {
+        if ($this->exportService->delete($id)) {
             flash()->success('Xóa bản ghi thành công.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         } else {
             flash()->error('Xóa bản ghi thất bại.');
-            return redirect()->route('import.index');
+            return redirect()->route('export.index');
         }
     }
 

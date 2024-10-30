@@ -10,13 +10,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($imports as $import)
+        @foreach ($exports as $export)
             <tr>
-                <th data-title="Mã số" class="table-code tw-50">{{ $import->id }}</th>
-                <td data-title="Kho">{{ $import->warehouse_name }}</td>
-                <td data-title="Nhân viên">{{ $import->user_name }}</td>
-                <td data-title="Khách hàng">{{ $import->customer_name }}</td>
-                <td data-title="Ngày tạo">{{ $import->created_at->format('d-m-Y') }}</td>
+                <th data-title="Mã số" class="table-code tw-50">{{ $export->id }}</th>
+                <td data-title="Kho">{{ $export->warehouse_name }}</td>
+                <td data-title="Nhân viên">{{ $export->user_name }}</td>
+                <td data-title="Khách hàng">{{ $export->customer_name }}</td>
+                <td data-title="Ngày tạo">{{ $export->created_at->format('d-m-Y') }}</td>
                 <td class="table-action text-end tw-50">
                     <div class="dropdown">
                         <button class="border-0 bg-transparent" type="button" data-bs-toggle="dropdown"
@@ -25,14 +25,14 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="{{ route('import.edit', $import->id) }}">
+                                <a class="dropdown-item" href="{{ route('export.edit', $export->id) }}">
                                     <i class="bi bi-pencil"></i>
                                     Chỉnh sửa
                                 </a>
                             </li>
 
                             <li>
-                                <a class="dropdown-item text-danger" href="{{ route('import.delete', $import->id) }}"
+                                <a class="dropdown-item text-danger" href="{{ route('export.delete', $export->id) }}"
                                     onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">
                                     <i class="bi bi-trash3"></i>
                                     Xóa
@@ -45,4 +45,4 @@
         @endforeach
     </tbody>
 </table>
-{{ $imports->links('pagination::bootstrap-5') }}
+{{ $exports->links('pagination::bootstrap-5') }}
