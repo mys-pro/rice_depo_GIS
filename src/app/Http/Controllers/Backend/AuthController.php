@@ -22,8 +22,14 @@ class AuthController extends Controller
         ];
 
         if (Auth::attempt($loginRequest)) {
-            flash()->success('Đăng nhập thành công!');
-            return redirect()->route('dashboard.index');
+            if (Auth::user()->status == 1) {
+                flash()->success('Đăng nhập thành công!');
+                return redirect()->route('dashboard.index');
+            } else {
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('auth.admin')->withInput();
+            }
         }
         flash()->error('Email hoặc mật khẩu không chính xác.');
         return redirect()->route('auth.admin')->withInput();

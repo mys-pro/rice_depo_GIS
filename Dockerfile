@@ -17,6 +17,7 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY ./docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 RUN usermod --uid 1000 www-data && groupmod --gid 1001 www-data
 

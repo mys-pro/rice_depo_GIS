@@ -89,9 +89,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <a href="#">Quên mật khẩu?</a>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-12">
                                             <button class="btn btn-primary w-100" type="submit">Đăng nhập</button>
                                         </div>

@@ -18,7 +18,8 @@ class AuthenticateMiddleware
      */
     protected $userRepository;
 
-    public function __construct(UserRepository $userRepository) {
+    public function __construct(UserRepository $userRepository)
+    {
         $this->userRepository = $userRepository;
     }
 
@@ -27,6 +28,10 @@ class AuthenticateMiddleware
         if (!Auth::check()) {
             flash()->error('Bạn phải đăng nhập mới thực hiện được chức năng này.');
             return redirect()->route('auth.admin');
+        } else if (Auth::user()->status == 0) {
+            Auth::logout();
+            flash()->error('Tài khoản của bạn đã bị khoá.');
+            return redirect()->route('auth.admin')->withInput();
         }
 
         $user = $this->userRepository->getWithCatalogueById(Auth::id());
